@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#050f24">
+<meta name="robots" content="noindex">
+<title>Voto Azul | Painel do Fiscal</title>
+<link rel="icon" href="logo.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050f24;--b1:#0877F9;--b2:#2da0ff;--w:#fff;--s:#AFC7E8;--m:#6B8CAE;--ok:#19d27a;--err:#ff5d5d;
+--glass:rgba(16,60,104,.38);--line:rgba(120,180,255,.2);--glow:0 0 22px rgba(8,119,249,.45);
+--st:env(safe-area-inset-top,0px);--sb:env(safe-area-inset-bottom,0px);color-scheme:dark}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{background:#020816}
+body{font-family:Inter,-apple-system,"SF Pro Text",Roboto,sans-serif;color:var(--w);min-height:100vh;
+background:radial-gradient(120% 60% at 50% -5%,#0b3a80 0%,transparent 60%),radial-gradient(90% 50% at 100% 100%,#0a2a58 0%,transparent 60%),var(--bg);
+background-attachment:fixed;padding:calc(var(--st) + 20px) 18px calc(var(--sb) + 40px)}
+button,input{font:inherit;color:inherit}
+svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.wrap{max-width:760px;margin:0 auto}
+.glass{background:var(--glass);border:1px solid var(--line);border-radius:22px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 20px;border:0;border-radius:14px;font-weight:700;cursor:pointer;background:linear-gradient(180deg,#2b95ff,#0765dc);box-shadow:var(--glow),inset 0 1px 0 rgba(255,255,255,.35);transition:transform .15s}
+.btn:active{transform:scale(.97)}.btn:disabled{opacity:.4;box-shadow:none;cursor:not-allowed}
+.btn.block{width:100%}
+.btn.ghost{background:rgba(8,40,90,.5);border:1px solid var(--line);box-shadow:none;color:var(--s)}
+.btn.danger{background:rgba(255,93,93,.14);border:1px solid rgba(255,93,93,.45);box-shadow:none;color:#ffb3b3}
+.btn.sm{padding:9px 14px;font-size:.82rem;border-radius:12px}
+.sub{color:var(--s);font-size:.9rem}
+.fld{display:flex;align-items:center;gap:10px;padding:0 14px;height:52px;border-radius:14px;border:1.5px solid var(--b1);background:rgba(2,12,30,.55);margin-bottom:12px}
+.fld input{flex:1;min-width:0;background:none;border:0;outline:0;font-size:1rem;text-overflow:ellipsis}
+.fld:focus-within{box-shadow:0 0 0 4px rgba(45,160,255,.25),var(--glow)}
+label.l{display:block;font-size:.8rem;font-weight:600;color:var(--s);margin:0 0 6px 2px}
+.hint{font-size:.76rem;color:var(--m);margin:-4px 2px 12px;line-height:1.4}
+.msg{font-size:.82rem;margin:-4px 2px 12px;display:none}.msg.on{display:block}.msg.err{color:var(--err)}.msg.ok{color:var(--ok)}
+.hide{display:none!important}
+
+/* login */
+#login{min-height:calc(100vh - 80px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+#login img{width:130px;margin-bottom:10px;filter:drop-shadow(0 0 22px rgba(45,160,255,.7))}
+.brand{font-size:2rem;font-weight:800;letter-spacing:-1px;text-shadow:0 0 24px rgba(45,160,255,.6)}.brand b{color:var(--b2)}
+.ov{font-size:.7rem;letter-spacing:.28em;color:var(--s);margin:6px 0 20px}
+.lc{width:100%;max-width:400px;padding:24px 20px;text-align:left}.lc h3{text-align:center;margin-bottom:16px;font-size:1.15rem}
+
+/* painel */
+header{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+header img{height:40px}header div{flex:1;line-height:1.2}header b{display:block;font-size:1.05rem}header small{color:var(--s);font-size:.74rem}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.stat{padding:14px 8px;text-align:center}.stat b{display:block;font-size:1.5rem}.stat small{font-size:.72rem;color:var(--s)}
+.box{padding:18px;margin-bottom:14px}.box h2{font-size:1.02rem;margin-bottom:4px}.box>.sub{font-size:.82rem;margin-bottom:14px}
+.row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:.72rem;font-weight:700;padding:5px 11px;border-radius:20px;color:#9dffcd;background:rgba(25,210,122,.16);border:1px solid rgba(25,210,122,.4)}
+.pill:before{content:"";width:6px;height:6px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok)}
+.pill.off{color:#ffd0d0;background:rgba(255,93,93,.14);border-color:rgba(255,93,93,.4)}.pill.off:before{background:var(--err);box-shadow:0 0 8px var(--err)}
+.add{display:grid;grid-template-columns:1fr 130px;gap:16px;align-items:start}
+@media(max-width:560px){.add{grid-template-columns:1fr}}
+.prev{width:130px;height:146px;border-radius:20px;border:1px dashed var(--line);display:grid;place-items:center;text-align:center;color:var(--m);font-size:.72rem;padding:8px;position:relative;overflow:hidden;background:rgba(2,12,30,.4);justify-self:center}
+.prev img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.prev.ok{border-style:solid;border-color:var(--ok)}
+.item{display:flex;align-items:center;gap:14px;padding:12px;margin-bottom:10px}
+.ph{width:64px;height:72px;border-radius:14px;flex:none;border:1px solid var(--line);position:relative;overflow:hidden;background:linear-gradient(160deg,#1f6fd1,#0a2f66)}
+.ph svg{position:absolute;inset:0}.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.item .t{flex:1;min-width:0}.num{display:inline-block;font-size:.66rem;font-weight:800;background:var(--b1);padding:2px 9px;border-radius:8px}
+.item .n{font-weight:700;margin:4px 0 1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.item small{color:var(--s);font-size:.78rem}
+.empty{text-align:center;color:var(--s);padding:22px 10px;font-size:.9rem}
+
+/* modal e aviso */
+#modal{position:fixed;inset:0;background:rgba(2,8,22,.78);display:none;align-items:center;justify-content:center;padding:20px;z-index:50}
+#modal.on{display:flex}
+#modal .glass{background:#0a2147;max-width:380px;width:100%;padding:22px}
+#modal h3{margin-bottom:8px}#modal p{color:var(--s);font-size:.9rem;line-height:1.45;margin-bottom:18px}
+#modal .row{justify-content:flex-end}
+#toast{position:fixed;left:50%;bottom:calc(var(--sb) + 24px);transform:translateX(-50%) translateY(20px);background:#0a2a58;border:1px solid var(--line);padding:11px 18px;border-radius:14px;font-size:.85rem;z-index:60;opacity:0;pointer-events:none;transition:.3s;max-width:90vw;text-align:center}
+#toast.on{opacity:1;transform:translateX(-50%)}
+/* ===== LIQUID GLASS ===== */
+body:before,body:after{content:"";position:fixed;z-index:-1;width:380px;height:380px;border-radius:50%;filter:blur(80px);pointer-events:none}
+body:before{background:#0877F9;top:-120px;left:-120px;opacity:.6}body:after{background:#16b8d4;bottom:-140px;right:-120px;opacity:.38}
+.glass{background:linear-gradient(135deg,rgba(255,255,255,.22) 0%,rgba(255,255,255,.06) 38%,rgba(255,255,255,.02) 62%,rgba(255,255,255,.14) 100%),rgba(12,52,108,.26);border:1px solid rgba(255,255,255,.24);backdrop-filter:blur(22px) saturate(180%) brightness(1.08);-webkit-backdrop-filter:blur(22px) saturate(180%) brightness(1.08);box-shadow:inset 0 1.5px 0 rgba(255,255,255,.55),inset 0 -1px 0 rgba(255,255,255,.1),inset 1px 0 0 rgba(255,255,255,.14),inset -1px 0 0 rgba(255,255,255,.14),0 12px 32px rgba(0,10,40,.42)}
+.btn:not(.ghost):not(.danger){background:linear-gradient(180deg,rgba(90,175,255,.98),rgba(7,101,220,.92));border:1px solid rgba(255,255,255,.35);box-shadow:inset 0 1.5px 0 rgba(255,255,255,.6),inset 0 -2px 6px rgba(0,60,160,.35),var(--glow),0 8px 22px rgba(8,119,249,.35)}
+.btn.ghost{background:linear-gradient(135deg,rgba(255,255,255,.16),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.26);box-shadow:inset 0 1.5px 0 rgba(255,255,255,.45);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.fld{background:rgba(2,12,30,.4);box-shadow:inset 0 1px 0 rgba(255,255,255,.25)}
+#modal .glass{background:linear-gradient(135deg,rgba(255,255,255,.2),rgba(255,255,255,.05)),rgba(10,33,71,.82)}
+.ph.has svg,.prev.ok svg{display:none}.ph img{opacity:0;transition:opacity .3s}.ph.has img{opacity:1}
+.vi{display:flex;align-items:center;gap:12px;padding:10px 12px;margin-bottom:8px}
+.vi .a{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-weight:800;background:linear-gradient(135deg,#0877F9,#2da0ff);flex:none}
+.vi .t{flex:1;min-width:0}.vi .n{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.vi small{color:var(--s);font-size:.74rem}
+.vi .st{font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:20px;color:var(--s);border:1px solid var(--line)}.vi .st.ok{color:#9dffcd;background:rgba(25,210,122,.16);border-color:rgba(25,210,122,.4)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:480px){.stats{grid-template-columns:repeat(2,1fr)!important}.two{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+.pill.wait{color:#ffe9a8;background:rgba(255,196,0,.14);border-color:rgba(255,196,0,.45)}.pill.wait:before{background:#ffc400;box-shadow:0 0 8px #ffc400}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+ <!-- LOGIN DO ADMIN -->
+ <section id="login">
+  <img src="logo.webp" alt="Biblioteca Professora Socorro Amorim">
+  <div class="brand">VOTO <b>AZUL</b></div><div class="ov">PAINEL DO FISCAL</div>
+  <div class="glass lc">
+   <h3>Acesso do fiscal</h3>
+   <label class="l" for="senha">Senha de acesso</label>
+   <div class="fld"><input id="senha" type="password" placeholder="Digite a senha" autocomplete="current-password" inputmode="numeric"></div>
+   <div class="msg err" id="lerr"></div>
+   <button class="btn block" id="entrar">Entrar</button>
+  </div>
+ </section>
+
+ <!-- PAINEL -->
+ <section id="panel" class="hide">
+  <header><img src="logo.webp" alt=""><div><b>Painel do Fiscal</b><small>Voto Azul · Eleição Monitor-Chefe</small></div><button class="btn ghost sm" id="sair">Sair</button></header>
+
+  <div class="stats">
+   <div class="glass stat"><b id="sC">0</b><small>Candidatos</small></div>
+   <div class="glass stat"><b id="sV">0</b><small>Votos</small></div>
+   <div class="glass stat"><b id="sP">0/0</b><small>Já votaram</small></div>
+   <div class="glass stat"><b id="sS" style="font-size:1.05rem;line-height:1.9">—</b><small>Votação</small></div>
+  </div>
+
+  <div class="glass box">
+   <h2>Status da votação</h2>
+   <p class="sub">A votação só começa quando você clicar em “Iniciar votação”. Ao encerrar, ninguém mais vota e o eleito aparece automaticamente para todos.</p>
+   <div class="row"><span class="pill" id="pill">Aberta</span><button class="btn ghost sm" id="toggle">Encerrar votação</button><button class="btn danger sm" id="zerar">Zerar votação</button></div>
+   <div class="hint" style="margin:12px 2px 0">Zerar coloca todos os votos em 0 e libera cada eleitor para votar de novo. Os candidatos e os eleitores continuam cadastrados.</div>
+  </div>
+
+  <div class="glass box">
+   <h2>Adicionar candidato</h2>
+   <p class="sub">Informe o nome, o dígito (número de 2 dígitos) e o link direto da foto no imgbb.</p>
+   <div class="add">
+    <div>
+     <label class="l" for="nome">Nome do candidato</label>
+     <div class="fld"><input id="nome" maxlength="60" placeholder="Ex.: Ana Clara Souza" autocomplete="off"></div>
+     <label class="l" for="dig">Dígito do candidato (2 números)</label>
+     <div class="fld"><input id="dig" maxlength="2" placeholder="Ex.: 12" autocomplete="off" inputmode="numeric" pattern="[0-9]*"></div>
+     <div class="hint" style="margin-top:-6px;margin-bottom:12px">É esse número que o aluno digita na urna para votar. Cada candidato precisa de um número diferente.</div>
+     <label class="l" for="foto">URL da foto (imgbb)</label>
+     <div class="fld"><input id="foto" type="url" placeholder="https://i.ibb.co/xxxxxxx/foto.jpg" autocomplete="off" inputmode="url"></div>
+     <div class="hint">No imgbb, envie a foto e copie o <b>Link direto</b> (começa com <b>https://i.ibb.co/</b> e termina em .jpg, .png ou .webp). O link da página (ibb.co/…) não funciona.</div>
+     <div class="msg" id="ferr"></div>
+     <button class="btn block" id="add" disabled>Adicionar candidato</button>
+    </div>
+    <div class="prev" id="prev">A foto aparece aqui</div>
+   </div>
+  </div>
+
+  <div class="glass box">
+   <h2>Eleitores</h2>
+   <p class="sub">Cada eleitor entra com o próprio código e vê o próprio nome. Aqui você vê quem já votou (nunca em quem).</p>
+   <div class="row" style="margin-bottom:14px"><button class="btn ghost sm hide" id="seed">Cadastrar a lista de eleitores</button></div>
+   <div class="two"><div class="fld"><input id="vn" maxlength="60" placeholder="Nome do eleitor" autocomplete="off"></div><div class="fld"><input id="vc" maxlength="30" placeholder="Código" inputmode="numeric" autocomplete="off"></div></div>
+   <button class="btn block ghost" id="vadd" style="margin-bottom:16px">Adicionar eleitor</button>
+   <div id="vlist"><div class="empty">Carregando...</div></div>
+  </div>
+
+  <div class="glass box">
+   <h2>Candidatos cadastrados</h2>
+   <p class="sub">Os votos aparecem em tempo real.</p>
+   <div id="list"><div class="empty">Carregando...</div></div>
+  </div>
+ </section>
+</div>
+
+<div id="modal"><div class="glass"><h3 id="mT"></h3><p id="mP"></p><div class="row"><button class="btn ghost sm" id="mNo">Cancelar</button><button class="btn danger sm" id="mYes">Remover</button></div></div></div>
+<div id="toast"></div>
+
+<script type="module">
+import {initializeApp} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+import {getAuth,signInWithEmailAndPassword,signOut,onAuthStateChanged} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+import {getFirestore,collection,doc,addDoc,deleteDoc,setDoc,writeBatch,deleteField,onSnapshot,query,orderBy,serverTimestamp} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+
+// ====== CHAVE DO FIREBASE DESTA PÁGINA (página do administrador) ======
+// Use a mesma chave do projeto Firebase da página dos eleitores.
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyDKZzipPHbi5EaSLT-5Red-xtdaEWokegI",
+  authDomain: "biblioteca-f186d.firebaseapp.com",
+  projectId: "biblioteca-f186d",
+  storageBucket: "biblioteca-f186d.firebasestorage.app",
+  messagingSenderId: "800513581384",
+  appId: "1:800513581384:web:431ab71ba6826de552137d",
+  measurementId: "G-8TQLCBWK7H"
+};
+const configured=!String(firebaseConfig.apiKey).startsWith('COLE');
+const app=initializeApp(firebaseConfig),db=getFirestore(app),auth=getAuth(app);
+// E-mail interno fixo: o administrador digita só a senha (não aparece na tela).
+const ADMIN_EMAIL='admin@votoazul.app';
+// ====================================================================
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const SIL='<svg viewBox="0 0 80 90" width="100%" height="100%"><circle cx="40" cy="34" r="16" fill="rgba(255,255,255,.88)"/><path d="M8 90c2-24 16-34 32-34s30 10 32 34z" fill="rgba(255,255,255,.88)"/></svg>';
+function toast(t){const e=$('toast');e.textContent=t;e.classList.add('on');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('on'),2800)}
+function msg(el,t,cls){el.textContent=t||'';el.className='msg'+(t?' on '+cls:'')}
+
+const SEED=[['Ana Luiza','9016056'],['João Gabriel','7440244'],['Mariany','6588955'],['Matheus','4360293'],['Lívia de Souza','5554990'],['João da Silva','3982405'],['Ana Luiza Pereira','2695675'],['Marystella','5174146'],['Thayza','8479163'],['Luis Antônio','1007506'],['Ana Giullia','5942357'],['Jardiel','4317128'],['Gustavo','2697515'],['Ana Lídia','3916502'],['Bruna','3503779'],['Emanuella','3985264'],['Jessika','9815630'],['Israel Fillipe','2573084'],['Nicoly','8347162'],['Andriele','5692417'],['Daphiny','1206849'],['Maria Helena','6935728'],['Caio Renan','3482057'],['Myrella','7628914'],['Yana','4156379'],['Felix','8971246'],['Ester','2368195'],['Vinícios','6517403'],['Victor','9742861']];
+let autoFired=false,V=[],C=[],unsubs=[],status='aguardando',imgOk=false;
+
+/* ---------- login ---------- */
+async function entrar(){
+ const p=$('senha').value.trim();
+ if(!configured)return msg($('lerr'),'Firebase não configurado. Cole a chave do Firebase no começo do script desta página.','err');
+ if(!p)return msg($('lerr'),'Digite a senha de acesso.','err');
+ msg($('lerr'),'');$('entrar').disabled=true;$('entrar').textContent='Entrando...';
+ try{await signInWithEmailAndPassword(auth,ADMIN_EMAIL,p)}
+ catch(err){console.error(err);const c=err.code||'';const M={'auth/operation-not-allowed':'Ative o login por E-mail/senha em Authentication, no Firebase.','auth/invalid-credential':'Senha incorreta, ou o usuário admin@votoazul.app ainda não foi criado em Authentication.','auth/wrong-password':'Senha incorreta.','auth/user-not-found':'O usuário admin@votoazul.app ainda não foi criado em Authentication.','auth/operation-not-supported-in-this-environment':'Abra a página por um endereço http(s) (Firebase Hosting ou npx serve), não direto do arquivo.','auth/network-request-failed':'Sem conexão com a internet.','auth/unauthorized-domain':'Adicione este domínio em Authentication > Configurações > Domínios autorizados.','auth/too-many-requests':'Muitas tentativas. Aguarde alguns minutos.','auth/api-key-not-valid.-please-pass-a-valid-api-key.':'Chave do Firebase inválida.'};msg($('lerr'),M[c]||('Erro ao entrar: '+(c||err.message)),'err')}
+ $('entrar').disabled=false;$('entrar').textContent='Entrar';
+}
+$('entrar').onclick=entrar;$('senha').onkeydown=e=>{if(e.key==='Enter')entrar()};
+$('sair').onclick=()=>signOut(auth);
+
+if(location.protocol==='file:')msg($('lerr'),'Você abriu o arquivo direto do computador. Para o login funcionar, abra por um endereço http(s) (Firebase Hosting ou npx serve).','err');
+if(configured){
+ onAuthStateChanged(auth,u=>{
+  unsubs.forEach(f=>f());unsubs=[];
+  $('login').classList.toggle('hide',!!u);$('panel').classList.toggle('hide',!u);
+  if(u)listen();
+ });
+}
+
+/* ---------- dados em tempo real ---------- */
+function listen(){
+ unsubs.push(onSnapshot(query(collection(db,'candidatos'),orderBy('numero')),s=>{C=s.docs.map(d=>({id:d.id,...d.data()}));render()},e=>{console.error(e);toast('Erro ao carregar candidatos')}));
+ unsubs.push(onSnapshot(query(collection(db,'eleitores'),orderBy('nome')),s=>{V=s.docs.map(d=>({id:d.id,...d.data()}));render()},e=>{console.error(e);toast('Erro ao carregar eleitores')}));
+ unsubs.push(onSnapshot(doc(db,'config','eleicao'),s=>{status=s.exists()&&s.data().status?s.data().status:'aguardando';render()},e=>console.error(e)));
+}
+function render(){
+ const tot=C.reduce((a,c)=>a+(c.votos||0),0),ab=status==='aberta';
+ const todos=V.length>0&&V.every(v=>v.votou);
+ if(!todos)autoFired=false;
+ else if(ab&&!autoFired&&tot>0){autoFired=true;setDoc(doc(db,'config','eleicao'),{status:'encerrada'},{merge:true}).then(()=>toast('Todos votaram: votação encerrada e eleito divulgado')).catch(e=>console.error(e))}
+ const vt=V.filter(v=>v.votou).length;$('sP').textContent=vt+'/'+V.length;$('sC').textContent=C.length;$('sV').textContent=tot;$('sS').textContent=ab?'Aberta':'Encerrada';
+ $('pill').textContent=ab?'Aberta':status==='encerrada'?'Encerrada':'Não iniciada';$('pill').classList.toggle('off',status==='encerrada');$('pill').classList.toggle('wait',status==='aguardando');
+ $('toggle').textContent=ab?'Encerrar votação':status==='encerrada'?'Reabrir votação':'Iniciar votação';
+ $('list').innerHTML=C.map(c=>`<div class="glass item"><div class="ph">${SIL}${c.foto?`<img src="${esc(c.foto)}" alt="" referrerpolicy="no-referrer" onload="this.parentNode.classList.add('has')" onerror="this.remove()">`:''}</div><div class="t"><span class="num">Nº ${String(c.numero||0).padStart(2,'0')}</span><div class="n">${esc(c.nome)}</div><small>${c.votos||0} voto${(c.votos||0)===1?'':'s'}</small></div><button class="btn danger sm" data-id="${c.id}">Remover</button></div>`).join('')||'<div class="empty">Nenhum candidato ainda. Adicione o primeiro acima.</div>';
+ $('seed').classList.toggle('hide',!SEED.some(([,c])=>!V.find(v=>v.id===c)));
+ $('vlist').innerHTML=V.map(v=>`<div class="glass vi"><div class="a">${esc((v.nome||'?')[0]).toUpperCase()}</div><div class="t"><div class="n">${esc(v.nome)}</div><small>Código ${esc(v.id)}</small></div><span class="st ${v.votou?'ok':''}">${v.votou?'Votou':'Pendente'}</span><button class="btn danger sm" data-code="${esc(v.id)}">Remover</button></div>`).join('')||'<div class="empty">Nenhum eleitor cadastrado. Use o botão acima para cadastrar a lista.</div>';
+}
+
+/* ---------- status da votação ---------- */
+$('toggle').onclick=async()=>{
+ const novo=status==='aberta'?'encerrada':'aberta';
+ try{await setDoc(doc(db,'config','eleicao'),{status:novo},{merge:true});toast(novo==='encerrada'?'Votação encerrada':status==='encerrada'?'Votação reaberta':'Votação iniciada')}
+ catch(e){console.error(e);toast('Sem permissão. Confira as regras do Firestore.')}
+};
+
+/* ---------- adicionar candidato ---------- */
+let t;
+const digVal=()=>$('dig').value.replace(/\D/g,'').slice(0,2);
+function digOk(){const d=digVal();return d.length===2&&!C.some(c=>(c.numero||0)===parseInt(d,10))}
+function checkForm(){const d=digVal();if($('dig').value!==d)$('dig').value=d;
+ if(d.length===2&&C.some(c=>(c.numero||0)===parseInt(d,10)))msg($('ferr'),'O número '+d+' já é de outro candidato.','err');
+ else if(($('ferr').textContent||'').startsWith('O número'))msg($('ferr'),'');
+ $('add').disabled=!($('nome').value.trim()&&digOk()&&imgOk)}
+function checkImg(){
+ clearTimeout(t);imgOk=false;checkForm();
+ const u=$('foto').value.trim(),p=$('prev');p.className='prev';
+ if(!u){p.textContent='A foto aparece aqui';msg($('ferr'),'');return}
+ if(!/^https:\/\//i.test(u)){p.textContent='Link inválido';return msg($('ferr'),'O link precisa começar com https://','err')}
+ let host='';try{host=new URL(u).hostname}catch(e){p.textContent='Link inválido';return msg($('ferr'),'Esse link não é válido.','err')}
+ if(host==='ibb.co'||host==='www.ibb.co'){p.textContent='Link da página';return msg($('ferr'),'Esse é o link da página. Use o “Link direto”, que começa com https://i.ibb.co/','err')}
+ p.textContent='Carregando...';msg($('ferr'),'');
+ t=setTimeout(()=>{
+  const im=new Image();im.referrerPolicy='no-referrer';
+  im.onload=()=>{if($('foto').value.trim()!==u)return;p.textContent='';p.appendChild(im);p.classList.add('ok');imgOk=true;msg($('ferr'),'Foto carregada.','ok');checkForm()};
+  im.onerror=()=>{if($('foto').value.trim()!==u)return;p.textContent='Não carregou';msg($('ferr'),'Não consegui carregar essa imagem. Confira o link direto.','err')};
+  im.src=u;
+ },350);
+}
+$('foto').oninput=checkImg;$('nome').oninput=checkForm;$('dig').oninput=checkForm;
+$('add').onclick=async()=>{
+ const nome=$('nome').value.trim().replace(/\s+/g,' '),foto=$('foto').value.trim();
+ if(!nome||!imgOk||!digOk())return;
+ $('add').disabled=true;$('add').textContent='Adicionando...';
+ try{
+  const numero=parseInt(digVal(),10);
+  await addDoc(collection(db,'candidatos'),{nome,foto,numero,votos:0,criadoEm:serverTimestamp()});
+  $('nome').value='';$('dig').value='';$('foto').value='';$('prev').className='prev';$('prev').textContent='A foto aparece aqui';imgOk=false;msg($('ferr'),'');
+  toast('Candidato adicionado');
+ }catch(e){console.error(e);toast('Sem permissão. Confira as regras do Firestore.')}
+ $('add').textContent='Adicionar candidato';checkForm();
+};
+
+/* ---------- modal de confirmação ---------- */
+let acao=null;
+function pedir(titulo,texto,botao,fn){$('mT').textContent=titulo;$('mP').textContent=texto;$('mYes').textContent=botao;acao=fn;$('modal').classList.add('on')}
+$('mNo').onclick=()=>{acao=null;$('modal').classList.remove('on')};
+$('mYes').onclick=async()=>{const f=acao;acao=null;$('modal').classList.remove('on');if(f)await f()};
+const semPerm=e=>{console.error(e);toast('Sem permissão. Confira as regras do Firestore.')};
+
+/* ---------- remover candidato ---------- */
+$('list').onclick=e=>{
+ const b=e.target.closest('button[data-id]');if(!b)return;
+ const c=C.find(x=>x.id===b.dataset.id);if(!c)return;
+ pedir(`Remover ${c.nome}?`,(c.votos||0)>0?`Este candidato já tem ${c.votos} voto${c.votos===1?'':'s'}, e eles serão perdidos junto com ele. Essa ação não pode ser desfeita.`:'O candidato sai da votação. Essa ação não pode ser desfeita.','Remover',
+  async()=>{try{await deleteDoc(doc(db,'candidatos',c.id));toast('Candidato removido')}catch(e){semPerm(e)}});
+};
+
+/* ---------- zerar votação ---------- */
+$('zerar').onclick=()=>pedir('Zerar a votação?','Todos os votos voltam a 0, todos os eleitores poderão votar de novo e a eleição volta para “não iniciada”. Essa ação não pode ser desfeita.','Zerar',async()=>{
+ try{
+  const ops=[...C.map(c=>[doc(db,'candidatos',c.id),{votos:0}]),...V.map(v=>[doc(db,'eleitores',v.id),{votou:false,votouEm:deleteField()}])];
+  for(let i=0;i<ops.length;i+=400){const b=writeBatch(db);ops.slice(i,i+400).forEach(([r,d])=>b.update(r,d));await b.commit()}
+  await setDoc(doc(db,'config','eleicao'),{status:'aguardando'},{merge:true});
+  toast('Votação zerada');
+ }catch(e){semPerm(e)}
+});
+
+/* ---------- eleitores ---------- */
+$('seed').onclick=async()=>{
+ const falta=SEED.filter(([,c])=>!V.find(v=>v.id===c));if(!falta.length)return;
+ $('seed').disabled=true;
+ try{const b=writeBatch(db);falta.forEach(([nome,c])=>b.set(doc(db,'eleitores',c),{nome,votou:false}));await b.commit();toast(falta.length+' eleitores cadastrados')}
+ catch(e){semPerm(e)}
+ $('seed').disabled=false;
+};
+$('vadd').onclick=async()=>{
+ const nome=$('vn').value.trim().replace(/\s+/g,' '),c=$('vc').value.trim().toUpperCase();
+ if(!nome)return toast('Digite o nome do eleitor');
+ if(!/^[A-Z0-9_-]{3,30}$/.test(c))return toast('Código: 3 a 30 letras ou números');
+ if(V.find(v=>v.id===c))return toast('Já existe um eleitor com esse código');
+ try{await setDoc(doc(db,'eleitores',c),{nome,votou:false});$('vn').value='';$('vc').value='';toast('Eleitor adicionado')}catch(e){semPerm(e)}
+};
+$('vlist').onclick=e=>{
+ const b=e.target.closest('button[data-code]');if(!b)return;
+ const v=V.find(x=>x.id===b.dataset.code);if(!v)return;
+ pedir(`Remover ${v.nome}?`,v.votou?'Esse eleitor já votou; o voto dele continua contado, mas o código deixa de funcionar.':'O código dele deixa de funcionar.','Remover',
+  async()=>{try{await deleteDoc(doc(db,'eleitores',v.id));toast('Eleitor removido')}catch(e){semPerm(e)}});
+};
+</script>
+</body>
+</html>
