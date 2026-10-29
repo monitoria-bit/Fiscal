@@ -19,7 +19,7 @@ html{background:#020816}
 body{font-family:Inter,-apple-system,"SF Pro Text",Roboto,sans-serif;color:var(--w);min-height:100vh;
 background:radial-gradient(120% 60% at 50% -5%,#0b3a80 0%,transparent 60%),radial-gradient(90% 50% at 100% 100%,#0a2a58 0%,transparent 60%),var(--bg);
 background-attachment:fixed;padding:calc(var(--st) + 20px) 18px calc(var(--sb) + 40px)}
-button,input{font:inherit;color:inherit}
+button,input,textarea{font:inherit;color:inherit}
 svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;flex:none}
 .wrap{max-width:760px;margin:0 auto}
 .glass{background:var(--glass);border:1px solid var(--line);border-radius:22px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
@@ -31,7 +31,8 @@ svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.9;stro
 .btn.sm{padding:9px 14px;font-size:.82rem;border-radius:12px}
 .sub{color:var(--s);font-size:.9rem}
 .fld{display:flex;align-items:center;gap:10px;padding:0 14px;height:52px;border-radius:14px;border:1.5px solid var(--b1);background:rgba(2,12,30,.55);margin-bottom:12px}
-.fld input{flex:1;min-width:0;background:none;border:0;outline:0;font-size:1rem;text-overflow:ellipsis}
+.fld input,.fld textarea{flex:1;min-width:0;background:none;border:0;outline:0;font-size:1rem;text-overflow:ellipsis}
+.fld.ta{height:auto;padding:12px 14px;align-items:stretch}.fld textarea{resize:vertical;min-height:90px;line-height:1.4}
 .fld:focus-within{box-shadow:0 0 0 4px rgba(45,160,255,.25),var(--glow)}
 label.l{display:block;font-size:.8rem;font-weight:600;color:var(--s);margin:0 0 6px 2px}
 .hint{font-size:.76rem;color:var(--m);margin:-4px 2px 12px;line-height:1.4}
@@ -85,26 +86,39 @@ body:before{background:#0877F9;top:-120px;left:-120px;opacity:.6}body:after{back
 #modal .glass{background:linear-gradient(135deg,rgba(255,255,255,.2),rgba(255,255,255,.05)),rgba(10,33,71,.82)}
 .ph.has svg,.prev.ok svg{display:none}.ph img{opacity:0;transition:opacity .3s}.ph.has img{opacity:1}
 .vi{display:flex;align-items:center;gap:12px;padding:10px 12px;margin-bottom:8px}
-.vi .a{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-weight:800;background:linear-gradient(135deg,#0877F9,#2da0ff);flex:none}
-.vi .t{flex:1;min-width:0}.vi .n{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.vi small{color:var(--s);font-size:.74rem}
+.vi .a{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-weight:800;background:linear-gradient(135deg,#0877F9,#2da0ff);flex:none;position:relative;overflow:hidden}
+.vi .a img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.vi .t{flex:1;min-width:0}.vi .n{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:flex;align-items:center}.vi small{color:var(--s);font-size:.74rem;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .vi .st{font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:20px;color:var(--s);border:1px solid var(--line)}.vi .st.ok{color:#9dffcd;background:rgba(25,210,122,.16);border-color:rgba(25,210,122,.4)}
+.vi .acts{display:flex;gap:6px;flex:none}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 @media(max-width:480px){.stats{grid-template-columns:repeat(2,1fr)!important}.two{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 .pill.wait{color:#ffe9a8;background:rgba(255,196,0,.14);border-color:rgba(255,196,0,.45)}.pill.wait:before{background:#ffc400;box-shadow:0 0 8px #ffc400}
+/* chips, selo, fiscais */
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.chip{padding:8px 16px;border-radius:20px;border:1px solid rgba(255,255,255,.24);background:rgba(8,40,90,.5);color:var(--s);font-size:.82rem;font-weight:600;cursor:pointer}
+.chip.on{background:linear-gradient(180deg,rgba(80,170,255,.95),rgba(7,101,220,.9));color:#fff;border-color:rgba(255,255,255,.4);box-shadow:var(--glow)}
+.chip.on.imp{background:linear-gradient(180deg,#ffd23f,#e0a400);color:#2a1a00}.chip.on.urg{background:linear-gradient(180deg,#ff6b6b,#d62f2f)}
+.vb{width:1.15em;height:1.15em;flex:none;margin-left:5px;filter:drop-shadow(0 0 4px rgba(45,160,255,.95)) drop-shadow(0 0 11px rgba(29,155,255,.75))}
+.tag{font-size:.6rem;font-weight:800;letter-spacing:.1em;padding:2px 8px;border-radius:10px;margin-left:8px;color:#ffe29a;background:rgba(255,196,0,.14);border:1px solid rgba(255,196,0,.5)}
+.switch{display:flex;align-items:center;gap:10px;margin:0 2px 14px;cursor:pointer;font-size:.88rem;color:var(--s)}
+.switch i{width:44px;height:26px;border-radius:14px;background:rgba(255,255,255,.14);position:relative;transition:.2s;flex:none}
+.switch i:after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.2s}
+.switch.on i{background:var(--b1);box-shadow:var(--glow)}.switch.on i:after{left:21px}
 </style>
 </head>
 <body>
 <div class="wrap">
 
- <!-- LOGIN DO ADMIN -->
+ <!-- LOGIN -->
  <section id="login">
   <img src="https://i.ibb.co/5hDT1ZMH/logo.webp" alt="Biblioteca Professora Socorro Amorim">
   <div class="brand">VOTO <b>AZUL</b></div><div class="ov">PAINEL DO FISCAL</div>
   <div class="glass lc">
    <h3>Acesso do fiscal</h3>
-   <label class="l" for="senha">Senha de acesso</label>
-   <div class="fld"><input id="senha" type="password" placeholder="Digite a senha" autocomplete="current-password" inputmode="numeric"></div>
+   <label class="l" for="senha">Senha de 6 dígitos</label>
+   <div class="fld"><input id="senha" type="password" placeholder="Digite a senha" autocomplete="current-password" inputmode="numeric" maxlength="6"></div>
    <div class="msg err" id="lerr"></div>
    <button class="btn block" id="entrar">Entrar</button>
   </div>
@@ -112,7 +126,7 @@ body:before{background:#0877F9;top:-120px;left:-120px;opacity:.6}body:after{back
 
  <!-- PAINEL -->
  <section id="panel" class="hide">
-  <header><img src="https://i.ibb.co/5hDT1ZMH/logo.webp" alt=""><div><b>Painel do Fiscal</b><small>Voto Azul · Eleição Monitor-Chefe</small></div><button class="btn ghost sm" id="sair">Sair</button></header>
+  <header><img src="https://i.ibb.co/5hDT1ZMH/logo.webp" alt=""><div><b id="quem">Painel do Fiscal</b><small>Voto Azul · Eleição Monitor-Chefe</small></div><button class="btn ghost sm" id="sair">Sair</button></header>
 
   <div class="stats">
    <div class="glass stat"><b id="sC">0</b><small>Candidatos</small></div>
@@ -123,9 +137,36 @@ body:before{background:#0877F9;top:-120px;left:-120px;opacity:.6}body:after{back
 
   <div class="glass box">
    <h2>Status da votação</h2>
-   <p class="sub">A votação só começa quando você clicar em “Iniciar votação”. Ao encerrar, ninguém mais vota e o eleito aparece automaticamente para todos.</p>
+   <p class="sub">A votação só começa quando você clicar em “Iniciar votação”. Ao encerrar, ninguém mais vota e os eleitores veem a apuração: o coração acelera, os votos aparecem aos poucos e no final surge o eleito.</p>
    <div class="row"><span class="pill" id="pill">Aberta</span><button class="btn ghost sm" id="toggle">Encerrar votação</button><button class="btn danger sm" id="zerar">Zerar votação</button></div>
    <div class="hint" style="margin:12px 2px 0">Zerar coloca todos os votos em 0 e libera cada eleitor para votar de novo. Os candidatos e os eleitores continuam cadastrados.</div>
+  </div>
+
+  <!-- MENSAGENS -->
+  <div class="glass box">
+   <h2>Enviar notificação</h2>
+   <p class="sub">Aparece para todos os eleitores, com o seu nome, a sua foto e o selo azul (se você for verificado).</p>
+   <div class="chips" id="tipos"><button class="chip on" data-t="info">Aviso</button><button class="chip imp" data-t="importante">Importante</button><button class="chip urg" data-t="urgente">Urgente</button></div>
+   <label class="l" for="mt">Título (opcional)</label>
+   <div class="fld"><input id="mt" maxlength="60" placeholder="Ex.: A votação começa às 10h" autocomplete="off"></div>
+   <label class="l" for="mx">Mensagem</label>
+   <div class="fld ta"><textarea id="mx" maxlength="400" placeholder="Escreva sua mensagem personalizada..."></textarea></div>
+   <button class="btn block" id="msend" disabled>Enviar notificação</button>
+   <h2 style="margin-top:22px;font-size:.95rem">Notificações enviadas</h2>
+   <div id="alist" style="margin-top:10px"><div class="empty">Carregando...</div></div>
+  </div>
+
+  <!-- FISCAIS (só o fiscal-chefe) -->
+  <div class="glass box hide" id="fbox">
+   <h2>Fiscais</h2>
+   <p class="sub">Só você (fiscal-chefe) cria e remove fiscais. Cada um entra com a própria senha de 6 dígitos e aparece nas notificações com nome, foto e selo.</p>
+   <div class="two"><div><label class="l" for="fn">Nome</label><div class="fld"><input id="fn" maxlength="40" placeholder="Nome do fiscal" autocomplete="off"></div></div><div><label class="l" for="fs">Senha (6 dígitos)</label><div class="fld"><input id="fs" maxlength="6" placeholder="Ex.: 482913" inputmode="numeric" autocomplete="off"></div></div></div>
+   <label class="l" for="ff">URL da foto (imgbb, opcional)</label>
+   <div class="fld"><input id="ff" type="url" placeholder="https://i.ibb.co/xxxxxxx/foto.jpg" autocomplete="off" inputmode="url"></div>
+   <div class="switch on" id="fv"><i></i>Selo azul verificado</div>
+   <div class="msg" id="fmsg"></div>
+   <button class="btn block ghost" id="fadd" style="margin-bottom:16px">Adicionar fiscal</button>
+   <div id="flist"><div class="empty">Carregando...</div></div>
   </div>
 
   <div class="glass box">
@@ -170,12 +211,9 @@ body:before{background:#0877F9;top:-120px;left:-120px;opacity:.6}body:after{back
 
 <script type="module">
 import {initializeApp} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-import {getAuth,signInWithEmailAndPassword,signOut,onAuthStateChanged} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-import {getFirestore,collection,doc,addDoc,deleteDoc,setDoc,writeBatch,deleteField,onSnapshot,query,orderBy,serverTimestamp} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+import {getAuth,signInWithEmailAndPassword,createUserWithEmailAndPassword,signOut,onAuthStateChanged} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+import {getFirestore,collection,doc,addDoc,getDoc,deleteDoc,setDoc,writeBatch,deleteField,onSnapshot,query,orderBy,limit,serverTimestamp} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 
-// ====== CHAVE DO FIREBASE DESTA PÁGINA (página do administrador) ======
-// Use a mesma chave do projeto Firebase da página dos eleitores.
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyDKZzipPHbi5EaSLT-5Red-xtdaEWokegI",
   authDomain: "biblioteca-f186d.firebaseapp.com",
@@ -187,38 +225,63 @@ const firebaseConfig = {
 };
 const configured=!String(firebaseConfig.apiKey).startsWith('COLE');
 const app=initializeApp(firebaseConfig),db=getFirestore(app),auth=getAuth(app);
-// E-mail interno fixo: o administrador digita só a senha (não aparece na tela).
-const ADMIN_EMAIL='admin@votoazul.app';
-// ====================================================================
+// segunda instância só para criar contas de fiscais sem deslogar o fiscal-chefe
+const sAuth=getAuth(initializeApp(firebaseConfig,'sec'));
+
+// Fiscal-chefe: a senha NÃO fica no código. A conta admin@votoazul.app existe só no Firebase Authentication.
+const CHEFES={'admin@votoazul.app':{id:'chefe',nome:'Fiscal-Chefe'}};
+const emailDe=p=>`f${p}@votoazul.app`;
 
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const SIL='<svg viewBox="0 0 80 90" width="100%" height="100%"><circle cx="40" cy="34" r="16" fill="rgba(255,255,255,.88)"/><path d="M8 90c2-24 16-34 32-34s30 10 32 34z" fill="rgba(255,255,255,.88)"/></svg>';
+const VB='<svg class="vb" viewBox="0 0 24 24"><polygon points="12.00,1.00 13.81,2.88 16.21,1.84 17.17,4.27 19.78,4.22 19.73,6.83 22.16,7.79 21.12,10.19 23.00,12.00 21.12,13.81 22.16,16.21 19.73,17.17 19.78,19.78 17.17,19.73 16.21,22.16 13.81,21.12 12.00,23.00 10.19,21.12 7.79,22.16 6.83,19.73 4.22,19.78 4.27,17.17 1.84,16.21 2.88,13.81 1.00,12.00 2.88,10.19 1.84,7.79 4.27,6.83 4.22,4.22 6.83,4.27 7.79,1.84 10.19,2.88" fill="#1d9bff" stroke="#1d9bff" stroke-width="1.4" stroke-linejoin="round"/><path d="m7.7 12.4 3 3 5.7-6.2" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 function toast(t){const e=$('toast');e.textContent=t;e.classList.add('on');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('on'),2800)}
 function msg(el,t,cls){el.textContent=t||'';el.className='msg'+(t?' on '+cls:'')}
+const avatar=(n,f)=>`<div class="a"><span>${esc((n||'?')[0]).toUpperCase()}</span>${f?`<img src="${esc(f)}" alt="" referrerpolicy="no-referrer" onerror="this.remove()">`:''}</div>`;
 
 const SEED=[['Ana Luiza','9016056'],['João Gabriel','7440244'],['Mariany','6588955'],['Matheus','4360293'],['Lívia de Souza','5554990'],['João da Silva','3982405'],['Ana Luiza Pereira','2695675'],['Marystella','5174146'],['Thayza','8479163'],['Luis Antônio','1007506'],['Ana Giullia','5942357'],['Jardiel','4317128'],['Gustavo','2697515'],['Ana Lídia','3916502'],['Bruna','3503779'],['Emanuella','3985264'],['Jessika','9815630'],['Israel Fillipe','2573084'],['Nicoly','8347162'],['Andriele','5692417'],['Daphiny','1206849'],['Maria Helena','6935728'],['Caio Renan','3482057'],['Myrella','7628914'],['Yana','4156379'],['Felix','8971246'],['Ester','2368195'],['Vinícios','6517403'],['Victor','9742861']];
-let autoFired=false,V=[],C=[],unsubs=[],status='aguardando',imgOk=false;
+let autoFired=false,V=[],C=[],F=[],A=[],unsubs=[],status='aguardando',imgOk=false,me=null,tipo='info',fVer=true;
 
 /* ---------- login ---------- */
 async function entrar(){
  const p=$('senha').value.trim();
- if(!configured)return msg($('lerr'),'Firebase não configurado. Cole a chave do Firebase no começo do script desta página.','err');
- if(!p)return msg($('lerr'),'Digite a senha de acesso.','err');
+ if(!configured)return msg($('lerr'),'Firebase não configurado.','err');
+ if(!/^\d{6}$/.test(p))return msg($('lerr'),'A senha tem 6 números.','err');
  msg($('lerr'),'');$('entrar').disabled=true;$('entrar').textContent='Entrando...';
- try{await signInWithEmailAndPassword(auth,ADMIN_EMAIL,p)}
- catch(err){console.error(err);const c=err.code||'';const M={'auth/operation-not-allowed':'Ative o login por E-mail/senha em Authentication, no Firebase.','auth/invalid-credential':'Senha incorreta, ou o usuário admin@votoazul.app ainda não foi criado em Authentication.','auth/wrong-password':'Senha incorreta.','auth/user-not-found':'O usuário admin@votoazul.app ainda não foi criado em Authentication.','auth/operation-not-supported-in-this-environment':'Abra a página por um endereço http(s) (Firebase Hosting ou npx serve), não direto do arquivo.','auth/network-request-failed':'Sem conexão com a internet.','auth/unauthorized-domain':'Adicione este domínio em Authentication > Configurações > Domínios autorizados.','auth/too-many-requests':'Muitas tentativas. Aguarde alguns minutos.','auth/api-key-not-valid.-please-pass-a-valid-api-key.':'Chave do Firebase inválida.'};msg($('lerr'),M[c]||('Erro ao entrar: '+(c||err.message)),'err')}
+ try{
+  try{await signInWithEmailAndPassword(auth,emailDe(p),p)}
+  catch(e1){
+   if(['auth/invalid-credential','auth/wrong-password','auth/user-not-found'].includes(e1.code)){
+    let ok=false,last=e1;
+    for(const em of Object.keys(CHEFES)){try{await signInWithEmailAndPassword(auth,em,p);ok=true;break}catch(e2){last=e2;if(!['auth/invalid-credential','auth/wrong-password','auth/user-not-found'].includes(e2.code))throw e2}}
+    if(!ok)throw last;
+   }
+   else throw e1;
+  }
+ }
+ catch(err){console.error(err);const c=err.code||'';const M={'auth/operation-not-allowed':'Ative o login por E-mail/senha em Authentication, no Firebase.','auth/invalid-credential':'Senha incorreta.','auth/wrong-password':'Senha incorreta.','auth/user-not-found':'Senha incorreta.','auth/operation-not-supported-in-this-environment':'Abra a página por um endereço http(s), não direto do arquivo.','auth/network-request-failed':'Sem conexão com a internet.','auth/unauthorized-domain':'Adicione este domínio em Authentication > Configurações > Domínios autorizados.','auth/too-many-requests':'Muitas tentativas. Aguarde alguns minutos.'};msg($('lerr'),M[c]||('Erro ao entrar: '+(c||err.message)),'err')}
  $('entrar').disabled=false;$('entrar').textContent='Entrar';
 }
 $('entrar').onclick=entrar;$('senha').onkeydown=e=>{if(e.key==='Enter')entrar()};
 $('sair').onclick=()=>signOut(auth);
 
-if(location.protocol==='file:')msg($('lerr'),'Você abriu o arquivo direto do computador. Para o login funcionar, abra por um endereço http(s) (Firebase Hosting ou npx serve).','err');
+if(location.protocol==='file:')msg($('lerr'),'Você abriu o arquivo direto do computador. Abra por um endereço http(s) (Firebase Hosting ou npx serve).','err');
 if(configured){
- onAuthStateChanged(auth,u=>{
-  unsubs.forEach(f=>f());unsubs=[];
-  $('login').classList.toggle('hide',!!u);$('panel').classList.toggle('hide',!u);
-  if(u)listen();
+ onAuthStateChanged(auth,async u=>{
+  unsubs.forEach(f=>f());unsubs=[];me=null;
+  if(!u){$('login').classList.remove('hide');$('panel').classList.add('hide');return}
+  const ch=CHEFES[u.email],master=!!ch,code=master?ch.id:((u.email||'').match(/^f(\d{6})@/)||[])[1];
+  try{
+   let s=code?await getDoc(doc(db,'fiscais',code)):null;
+   if(master&&s&&!s.exists()){await setDoc(doc(db,'fiscais',code),{nome:ch.nome,foto:'',verificado:true,principal:true});s=await getDoc(doc(db,'fiscais',code))}
+   if(!s||!s.exists()){await signOut(auth);msg($('lerr'),'Seu acesso foi removido pelo fiscal-chefe.','err');return}
+   me={...s.data(),code,master};
+  }catch(e){console.error(e);await signOut(auth);msg($('lerr'),'Sem permissão. Confira as regras do Firestore.','err');return}
+  $('login').classList.add('hide');$('panel').classList.remove('hide');
+  $('quem').innerHTML=esc(me.nome||'Fiscal')+(me.verificado?VB:'');
+  $('fbox').classList.toggle('hide',!master);
+  listen();
  });
 }
 
@@ -227,12 +290,17 @@ function listen(){
  unsubs.push(onSnapshot(query(collection(db,'candidatos'),orderBy('numero')),s=>{C=s.docs.map(d=>({id:d.id,...d.data()}));render()},e=>{console.error(e);toast('Erro ao carregar candidatos')}));
  unsubs.push(onSnapshot(query(collection(db,'eleitores'),orderBy('nome')),s=>{V=s.docs.map(d=>({id:d.id,...d.data()}));render()},e=>{console.error(e);toast('Erro ao carregar eleitores')}));
  unsubs.push(onSnapshot(doc(db,'config','eleicao'),s=>{status=s.exists()&&s.data().status?s.data().status:'aguardando';render()},e=>console.error(e)));
+ unsubs.push(onSnapshot(query(collection(db,'avisos'),orderBy('criadoEm','desc'),limit(30)),s=>{A=s.docs.map(d=>({id:d.id,...d.data()}));renderAvisos()},e=>console.error(e)));
+ if(me.master)unsubs.push(onSnapshot(collection(db,'fiscais'),s=>{
+  s.docs.forEach(d=>{if(d.data().principal&&d.id!==me.code)deleteDoc(doc(db,'fiscais',d.id)).catch(()=>{})});
+  F=s.docs.filter(d=>!(d.data().principal&&d.id!==me.code)).map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.principal?1:0)-(a.principal?1:0)||String(a.nome).localeCompare(String(b.nome)));renderFiscais()},e=>console.error(e)));
 }
+const fecha=()=>setDoc(doc(db,'config','eleicao'),{status:'encerrada',encerradoEm:serverTimestamp()},{merge:true});
 function render(){
  const tot=C.reduce((a,c)=>a+(c.votos||0),0),ab=status==='aberta';
  const todos=V.length>0&&V.every(v=>v.votou);
  if(!todos)autoFired=false;
- else if(ab&&!autoFired&&tot>0){autoFired=true;setDoc(doc(db,'config','eleicao'),{status:'encerrada'},{merge:true}).then(()=>toast('Todos votaram: votação encerrada e eleito divulgado')).catch(e=>console.error(e))}
+ else if(ab&&!autoFired&&tot>0){autoFired=true;fecha().then(()=>toast('Todos votaram: votação encerrada, apuração iniciada')).catch(e=>console.error(e))}
  const vt=V.filter(v=>v.votou).length;$('sP').textContent=vt+'/'+V.length;$('sC').textContent=C.length;$('sV').textContent=tot;$('sS').textContent=ab?'Aberta':'Encerrada';
  $('pill').textContent=ab?'Aberta':status==='encerrada'?'Encerrada':'Não iniciada';$('pill').classList.toggle('off',status==='encerrada');$('pill').classList.toggle('wait',status==='aguardando');
  $('toggle').textContent=ab?'Encerrar votação':status==='encerrada'?'Reabrir votação':'Iniciar votação';
@@ -243,9 +311,61 @@ function render(){
 
 /* ---------- status da votação ---------- */
 $('toggle').onclick=async()=>{
- const novo=status==='aberta'?'encerrada':'aberta';
- try{await setDoc(doc(db,'config','eleicao'),{status:novo},{merge:true});toast(novo==='encerrada'?'Votação encerrada':status==='encerrada'?'Votação reaberta':'Votação iniciada')}
- catch(e){console.error(e);toast('Sem permissão. Confira as regras do Firestore.')}
+ try{
+  if(status==='aberta'){await fecha();toast('Votação encerrada: apuração iniciada')}
+  else{await setDoc(doc(db,'config','eleicao'),{status:'aberta',encerradoEm:0},{merge:true});toast(status==='encerrada'?'Votação reaberta':'Votação iniciada')}
+ }catch(e){console.error(e);toast('Sem permissão. Confira as regras do Firestore.')}
+};
+
+/* ---------- notificações ---------- */
+const TL={info:'Aviso',importante:'Importante',urgente:'Urgente'};
+$('tipos').onclick=e=>{const b=e.target.closest('.chip');if(!b)return;tipo=b.dataset.t;[...$('tipos').children].forEach(x=>x.classList.toggle('on',x===b))};
+$('mx').oninput=()=>{$('msend').disabled=!$('mx').value.trim()};
+$('msend').onclick=async()=>{
+ const texto=$('mx').value.trim(),titulo=$('mt').value.trim();if(!texto||!me)return;
+ $('msend').disabled=true;$('msend').textContent='Enviando...';
+ try{
+  await addDoc(collection(db,'avisos'),{tipo,titulo,texto,fiscalNome:me.nome||'Fiscal',fiscalFoto:me.foto||'',verificado:!!me.verificado,criadoEm:serverTimestamp()});
+  $('mx').value='';$('mt').value='';toast('Notificação enviada');
+ }catch(e){console.error(e);toast('Sem permissão. Confira as regras do Firestore.')}
+ $('msend').textContent='Enviar notificação';$('msend').disabled=true;
+};
+function renderAvisos(){
+ $('alist').innerHTML=A.map(a=>`<div class="glass vi">${avatar(a.fiscalNome,a.fiscalFoto)}<div class="t"><div class="n">${esc(a.fiscalNome||'Fiscal')}${a.verificado?VB:''}<span class="tag">${TL[a.tipo]||'Aviso'}</span></div><small>${esc(a.titulo?a.titulo+' · ':'')+esc(a.texto)}</small></div><button class="btn danger sm" data-aid="${a.id}">Apagar</button></div>`).join('')||'<div class="empty">Nenhuma notificação enviada ainda.</div>';
+}
+$('alist').onclick=e=>{
+ const b=e.target.closest('button[data-aid]');if(!b)return;
+ pedir('Apagar notificação?','Ela some para todos os eleitores.','Apagar',async()=>{try{await deleteDoc(doc(db,'avisos',b.dataset.aid));toast('Notificação apagada')}catch(e){semPerm(e)}});
+};
+
+/* ---------- fiscais (só o chefe) ---------- */
+$('fv').onclick=()=>{fVer=!fVer;$('fv').classList.toggle('on',fVer)};
+$('fs').oninput=()=>{$('fs').value=$('fs').value.replace(/\D/g,'').slice(0,6)};
+function renderFiscais(){
+ $('flist').innerHTML=F.map(f=>`<div class="glass vi">${avatar(f.nome,f.foto)}<div class="t"><div class="n">${esc(f.nome)}${f.verificado?VB:''}${f.principal?'<span class="tag">CHEFE</span>':''}</div><small>${f.principal?'Acesso restrito':'Senha '+esc(f.senha||f.id)}</small></div>${f.principal?'':`<div class="acts"><button class="btn ghost sm" data-fv="${esc(f.id)}">${f.verificado?'Tirar selo':'Dar selo'}</button><button class="btn danger sm" data-fid="${esc(f.id)}">Remover</button></div>`}</div>`).join('')||'<div class="empty">Carregando...</div>';
+}
+$('fadd').onclick=async()=>{
+ const nome=$('fn').value.trim().replace(/\s+/g,' '),senha=$('fs').value,foto=$('ff').value.trim(),m=$('fmsg');
+ if(!nome)return msg(m,'Digite o nome do fiscal.','err');
+ if(!/^\d{6}$/.test(senha))return msg(m,'A senha precisa ter exatamente 6 números.','err');
+ if(F.some(x=>x.id===senha))return msg(m,'Essa senha já está em uso.','err');
+ for(const em of Object.keys(CHEFES)){let uso=false;try{await signInWithEmailAndPassword(sAuth,em,senha);uso=true;await signOut(sAuth)}catch(_){}if(uso)return msg(m,'Essa senha já está em uso.','err')}
+ if(foto&&!/^https:\/\//i.test(foto))return msg(m,'O link da foto precisa começar com https://','err');
+ msg(m,'');$('fadd').disabled=true;$('fadd').textContent='Adicionando...';
+ try{
+  try{await createUserWithEmailAndPassword(sAuth,emailDe(senha),senha)}
+  catch(e){if(e.code==='auth/email-already-in-use')await signInWithEmailAndPassword(sAuth,emailDe(senha),senha);else throw e}
+  await signOut(sAuth);
+  await setDoc(doc(db,'fiscais',senha),{nome,foto,verificado:fVer,senha,criadoEm:serverTimestamp()});
+  $('fn').value='';$('fs').value='';$('ff').value='';toast('Fiscal adicionado');
+ }catch(e){console.error(e);msg(m,e.code==='auth/operation-not-allowed'?'Ative o login por E-mail/senha em Authentication.':e.code==='permission-denied'?'Sem permissão. Confira as regras do Firestore.':'Erro: '+(e.code||e.message),'err')}
+ $('fadd').disabled=false;$('fadd').textContent='Adicionar fiscal';
+};
+$('flist').onclick=e=>{
+ const v=e.target.closest('button[data-fv]'),r=e.target.closest('button[data-fid]');
+ if(v){const f=F.find(x=>x.id===v.dataset.fv);if(f)setDoc(doc(db,'fiscais',f.id),{verificado:!f.verificado},{merge:true}).then(()=>toast(f.verificado?'Selo removido':'Selo azul ativado')).catch(semPerm)}
+ if(r){const f=F.find(x=>x.id===r.dataset.fid);if(!f||f.principal)return;
+  pedir(`Remover ${f.nome}?`,'A senha dele deixa de funcionar. As notificações que ele já mandou continuam.','Remover',async()=>{try{await deleteDoc(doc(db,'fiscais',f.id));toast('Fiscal removido')}catch(e){semPerm(e)}})}
 };
 
 /* ---------- adicionar candidato ---------- */
@@ -305,7 +425,7 @@ $('zerar').onclick=()=>pedir('Zerar a votação?','Todos os votos voltam a 0, to
  try{
   const ops=[...C.map(c=>[doc(db,'candidatos',c.id),{votos:0}]),...V.map(v=>[doc(db,'eleitores',v.id),{votou:false,votouEm:deleteField()}])];
   for(let i=0;i<ops.length;i+=400){const b=writeBatch(db);ops.slice(i,i+400).forEach(([r,d])=>b.update(r,d));await b.commit()}
-  await setDoc(doc(db,'config','eleicao'),{status:'aguardando'},{merge:true});
+  await setDoc(doc(db,'config','eleicao'),{status:'aguardando',encerradoEm:0},{merge:true});
   toast('Votação zerada');
  }catch(e){semPerm(e)}
 });
